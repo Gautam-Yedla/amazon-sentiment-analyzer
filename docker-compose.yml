@@ -1,0 +1,21 @@
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    container_name: sentiment-backend
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "9000:80"
+    restart: unless-stopped
+    container_name: sentiment-frontend
+    depends_on:
+      - backend
