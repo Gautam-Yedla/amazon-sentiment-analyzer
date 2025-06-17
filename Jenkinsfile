@@ -5,6 +5,7 @@ pipeline {
     BACKEND_DIR = 'backend'
     FRONTEND_DIR = 'frontend'
     DOCKER_DIR = 'docker'
+    VENV_PATH = 'venv\\Scripts\\activate.bat'
   }
 
   stages {
@@ -14,14 +15,14 @@ pipeline {
       }
     }
 
-
     stage('Install Dependencies') {
       steps {
         dir("${BACKEND_DIR}") {
+          echo "📦 Setting up Python environment and installing backend dependencies..."
           bat 'python -m venv venv && call venv\\Scripts\\activate.bat && pip install -r requirements.txt'
-
         }
         dir("${FRONTEND_DIR}") {
+          echo "📦 Installing frontend dependencies..."
           bat 'npm install'
         }
       }
@@ -29,8 +30,10 @@ pipeline {
 
     stage('Train Model') {
       steps {
-        dir("${BACKEND_DIR}/model") {
-          bat '. ../../venv/bin/activate && python train_model.py'
+        dir("${BACKEND_DIR}\\model") {
+          echo "🧠 Training ML model..."
+          // activate virtual environment from backend/venv and run training
+          bat 'call ..\\venv\\Scripts\\activate.bat && python train_model.py'
         }
       }
     }
@@ -38,6 +41,7 @@ pipeline {
     stage('Build Frontend') {
       steps {
         dir("${FRONTEND_DIR}") {
+          echo "⚙️ Building React frontend..."
           bat 'npm run build'
         }
       }
@@ -45,20 +49,15 @@ pipeline {
 
     stage('Docker Build') {
       steps {
+        echo "🐳 Building Docker containers..."
         bat 'docker-compose build'
       }
     }
-
-    // Optional: Push to DockerHub
-    // stage('Docker Push') { ... }
-
-    // Optional: Deploy to server
-    // stage('Deploy') { ... }
   }
 
   post {
     success {
-      echo '✅ Build, training and Docker build completed successfully!'
+      echo '✅ Build, training, and Docker build completed successfully!'
     }
     failure {
       echo '❌ Something went wrong.'
