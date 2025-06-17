@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'python:3.10' // base image with Python
-      args '-u root:root' // run as root to allow installs
-    }
-  }
+  agent any
 
   environment {
     BACKEND_DIR = 'backend'
