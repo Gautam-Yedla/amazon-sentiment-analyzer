@@ -18,7 +18,8 @@ pipeline {
     stage('Install Dependencies') {
       steps {
         dir("${BACKEND_DIR}") {
-          bat 'python -m venv venv && . venv/bin/activate && pip install -r requirements.txt'
+          bat 'python -m venv venv && call venv\\Scripts\\activate.bat && pip install -r requirements.txt'
+
         }
         dir("${FRONTEND_DIR}") {
           bat 'npm install'
