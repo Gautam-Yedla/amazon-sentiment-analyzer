@@ -5,7 +5,7 @@ pipeline {
     BACKEND_DIR = 'backend'
     FRONTEND_DIR = 'frontend'
     DOCKER_DIR = 'docker'
-    VENV_PATH = 'venv\\Scripts\\activate.bat'
+    VENV_PATH = 'venv\\Scripts\\activate.sh'
   }
 
   stages {
@@ -19,11 +19,11 @@ pipeline {
       steps {
         dir("${BACKEND_DIR}") {
           echo "📦 Setting up Python environment and installing backend dependencies..."
-          bat 'python -m venv venv && call venv\\Scripts\\activate.bat && pip install -r requirements.txt'
+          sh 'python -m venv venv && call venv\\Scripts\\activate.sh && pip install -r requirements.txt'
         }
         dir("${FRONTEND_DIR}") {
           echo "📦 Installing frontend dependencies..."
-          bat 'npm install'
+          sh 'npm install'
         }
       }
     }
@@ -32,8 +32,8 @@ pipeline {
       steps {
         dir("${BACKEND_DIR}\\data") {
           echo "⬇️ Downloading training and test data (if not cached)..."
-          bat 'call ..\\venv\\Scripts\\activate.bat && pip install gdown'
-          bat 'download_data.bat'
+          sh 'call ..\\venv\\Scripts\\activate.sh && pip install gdown'
+          sh 'download_data.sh'
         }
       }
     }
@@ -43,7 +43,7 @@ pipeline {
       steps {
         dir("${BACKEND_DIR}\\model") {
           echo "🧠 Training ML model..."
-          bat 'call ..\\venv\\Scripts\\activate.bat && python train_model.py'
+          sh 'call ..\\venv\\Scripts\\activate.sh && python train_model.py'
         }
       }
     }
@@ -52,7 +52,7 @@ pipeline {
       steps {
         dir("${FRONTEND_DIR}") {
           echo "⚙️ Building React frontend..."
-          bat 'npm run build'
+          sh 'npm run build'
         }
       }
     }
@@ -60,7 +60,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         echo "🐳 Building Docker containers..."
-        bat 'docker-compose build'
+        sh 'docker compose -f docker/docker-compose.yml build'
       }
     }
   }
