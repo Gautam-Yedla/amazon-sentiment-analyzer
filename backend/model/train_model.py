@@ -44,4 +44,4 @@ os.makedirs('../model', exist_ok=True)
 joblib.dump(model, MODEL_PATH)
 joblib.dump(vectorizer, VECTORIZER_PATH)
 
-print("✅ Model and vectorizer saved.")
+print(" Model and vectorizer saved.")
