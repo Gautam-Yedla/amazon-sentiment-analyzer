@@ -10,9 +10,10 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/Gautam-Yedla/amazon-sentiment-analyzer.git'
+        git branch: 'main', url: 'https://github.com/Gautam-Yedla/amazon-sentiment-analyzer.git'
       }
     }
+
 
     stage('Install Dependencies') {
       steps {
