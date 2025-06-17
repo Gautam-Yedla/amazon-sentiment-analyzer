@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import joblib
-from flask_cors import CORS
 import os
 
 # Load model and vectorizer
@@ -10,7 +10,7 @@ vectorizer = joblib.load('model/vectorizer.pkl')
 app = Flask(__name__)
 CORS(app)  
 
-
+@cross_origin()
 @app.route('/github-webhook/', methods=['GET', 'POST'])
 def github_webhook():
     if request.method == 'POST':
@@ -21,14 +21,16 @@ def github_webhook():
         return '👋 Webhook endpoint is active!', 200
 
 
-
+@cross_origin()
 @app.route('/ping', methods=['GET'])
 def ping():
     return jsonify({'message': 'Sentiment API is live!'})
 
-@app.route('/predict', methods=['GET'])
+@cross_origin()
+@app.route('/predict', methods=['POST'])
 def predict():
-    text = request.args.get('text')
+    data = request.get_json()
+    text = data.get('text', '')
     if not text:
         return jsonify({'error': 'No text provided'}), 400
 
