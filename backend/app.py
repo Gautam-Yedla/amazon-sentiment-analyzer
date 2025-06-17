@@ -11,11 +11,14 @@ app = Flask(__name__)
 CORS(app)  
 
 
-@app.route('/github-webhook/', methods=['POST'])
+@app.route('/github-webhook/', methods=['GET', 'POST'])
 def github_webhook():
-    payload = request.json
-    print("✅ Received webhook:", payload)
-    return '', 200  # Acknowledge the webhook
+    if request.method == 'POST':
+        payload = request.json
+        print("✅ Received webhook:", payload)
+        return '', 200
+    else:
+        return '👋 Webhook endpoint is active!', 200
 
 
 
