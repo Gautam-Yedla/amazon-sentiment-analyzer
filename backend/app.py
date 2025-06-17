@@ -10,6 +10,15 @@ vectorizer = joblib.load('model/vectorizer.pkl')
 app = Flask(__name__)
 CORS(app)  
 
+
+@app.route('/github-webhook/', methods=['POST'])
+def github_webhook():
+    payload = request.json
+    print("✅ Received webhook:", payload)
+    return '', 200  # Acknowledge the webhook
+
+
+
 @app.route('/ping', methods=['GET'])
 def ping():
     return jsonify({'message': 'Sentiment API is live!'})
