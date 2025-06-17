@@ -5,7 +5,7 @@ pipeline {
     BACKEND_DIR = 'backend'
     FRONTEND_DIR = 'frontend'
     DOCKER_DIR = 'docker'
-    VENV_PATH = 'venv\\Scripts\\activate.sh'
+    VENV_PATH = 'venv/bin/activate'
   }
 
   stages {
@@ -19,7 +19,12 @@ pipeline {
       steps {
         dir("${BACKEND_DIR}") {
           echo "📦 Setting up Python environment and installing backend dependencies..."
-          sh 'python -m venv venv && call venv\\Scripts\\activate.sh && pip install -r requirements.txt'
+          sh '''
+            python -m venv venv
+            source venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+          '''
         }
         dir("${FRONTEND_DIR}") {
           echo "📦 Installing frontend dependencies..."
@@ -30,20 +35,25 @@ pipeline {
 
     stage('Download Data') {
       steps {
-        dir("${BACKEND_DIR}\\data") {
+        dir("${BACKEND_DIR}/data") {
           echo "⬇️ Downloading training and test data (if not cached)..."
-          sh 'call ..\\venv\\Scripts\\activate.sh && pip install gdown'
-          sh 'download_data.sh'
+          sh '''
+            source ../venv/bin/activate
+            pip install gdown
+            ./download_data.sh
+          '''
         }
       }
     }
 
-
     stage('Train Model') {
       steps {
-        dir("${BACKEND_DIR}\\model") {
+        dir("${BACKEND_DIR}/model") {
           echo "🧠 Training ML model..."
-          sh 'call ..\\venv\\Scripts\\activate.sh && python train_model.py'
+          sh '''
+            source ../venv/bin/activate
+            python train_model.py
+          '''
         }
       }
     }
