@@ -18,10 +18,10 @@ pipeline {
     stage('Install Dependencies') {
       steps {
         dir("${BACKEND_DIR}") {
-          sh 'python -m venv venv && . venv/bin/activate && pip install -r requirements.txt'
+          bat 'python -m venv venv && . venv/bin/activate && pip install -r requirements.txt'
         }
         dir("${FRONTEND_DIR}") {
-          sh 'npm install'
+          bat 'npm install'
         }
       }
     }
@@ -29,7 +29,7 @@ pipeline {
     stage('Train Model') {
       steps {
         dir("${BACKEND_DIR}/model") {
-          sh '. ../../venv/bin/activate && python train_model.py'
+          bat '. ../../venv/bin/activate && python train_model.py'
         }
       }
     }
@@ -37,14 +37,14 @@ pipeline {
     stage('Build Frontend') {
       steps {
         dir("${FRONTEND_DIR}") {
-          sh 'npm run build'
+          bat 'npm run build'
         }
       }
     }
 
     stage('Docker Build') {
       steps {
-        sh 'docker-compose build'
+        bat 'docker-compose build'
       }
     }
 
