@@ -7,7 +7,7 @@ import joblib
 import os
 
 # Paths
-DATA_PATH = '../data/train.csv'
+DATA_PATH = '../../backend/data/train.csv'
 MODEL_PATH = '../model/sentiment_model.pkl'
 VECTORIZER_PATH = '../model/vectorizer.pkl'
 
