@@ -21,7 +21,7 @@ pipeline {
           echo "📦 Setting up Python environment and installing backend dependencies..."
           sh '''
             python -m venv venv
-            source venv/bin/activate
+            . venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
           '''
@@ -38,7 +38,7 @@ pipeline {
         dir("${BACKEND_DIR}/data") {
           echo "⬇️ Downloading training and test data (if not cached)..."
           sh '''
-            source ../venv/bin/activate
+            . ../venv/bin/activate
             pip install gdown
             ./download_data.sh
           '''
@@ -51,7 +51,7 @@ pipeline {
         dir("${BACKEND_DIR}/model") {
           echo "🧠 Training ML model..."
           sh '''
-            source ../venv/bin/activate
+            . ../venv/bin/activate
             python train_model.py
           '''
         }
