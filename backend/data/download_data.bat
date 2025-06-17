@@ -1,54 +1,68 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 
-set RETRIES=3
-set COUNT=0
-
-:: File IDs and names
-set TRAIN_ID=1HaaK_fPnMzS6-xMdUTCxwhiZZRWGx_4p
-set TEST_ID=1XT80AACe6HeQoQzXJ5iw7HYRNNioUXkw
-
-set TRAIN_FILE=train.csv
-set TEST_FILE=test.csv
-
-:: Activate venv
-call ..\venv\Scripts\activate.bat
-
-:: Function to download with retries
-:download_file
-set FILE_ID=%1
-set FILE_NAME=%2
-set COUNT=0
-
-if exist %FILE_NAME% (
-    echo ✅ %FILE_NAME% already exists. Skipping download.
-    goto :eof
-)
-
-:retry
-set /a COUNT+=1
-echo Attempt %COUNT% to download %FILE_NAME%
-
-gdown --fuzzy --no-cookies --id %FILE_ID% --output %FILE_NAME%
-
-if exist %FILE_NAME% (
-    echo ✅ %FILE_NAME% downloaded successfully.
-    goto :eof
-)
-
-if %COUNT% LSS %RETRIES% (
-    echo ❌ Failed to download %FILE_NAME%. Retrying in 10s...
-    timeout /T 10 >nul
-    goto retry
+:: Activate virtual environment
+if exist "..\venv\Scripts\activate.bat" (
+    call ..\venv\Scripts\activate.bat
 ) else (
-    echo ❌ Download failed for %FILE_NAME% after %RETRIES% attempts.
-    exit /b 1
+    echo ⚠️  Virtual environment not found. Skipping activation.
 )
 
-:end
-exit /b 0
-goto :eof
 
-:: Download both files
-call :download_file %TRAIN_ID% %TRAIN_FILE%
-call :download_file %TEST_ID% %TEST_FILE%
+:: Set retry attempts
+set RETRIES=3
+set TIMEOUT=10
+
+:: === Download train.csv ===
+set FILE_ID=1HaaK_fPnMzS6-xMdUTCxwhiZZRWGx_4p
+set FILE_NAME=train.csv
+if exist %FILE_NAME% (
+    echo ✅ %FILE_NAME% already exists. Skipping download...
+) else (
+    set COUNT=0
+    :retry_train
+    set /a COUNT+=1
+    echo 🔄 Attempt !COUNT! to download %FILE_NAME%...
+
+    gdown --fuzzy --no-cookies --id %FILE_ID% --output %FILE_NAME%
+    if exist %FILE_NAME% (
+        echo ✅ Successfully downloaded %FILE_NAME%.
+    ) else (
+        if !COUNT! LSS %RETRIES% (
+            echo ❌ Failed to download. Retrying in %TIMEOUT% seconds...
+            timeout /T %TIMEOUT% >nul
+            goto retry_train
+        ) else (
+            echo ❌ Download failed after %RETRIES% attempts.
+            exit /b 1
+        )
+    )
+)
+
+:: === Download test.csv ===
+set FILE_ID=1XT80AACe6HeQoQzXJ5iw7HYRNNioUXkw
+set FILE_NAME=test.csv
+if exist %FILE_NAME% (
+    echo ✅ %FILE_NAME% already exists. Skipping download...
+) else (
+    set COUNT=0
+    :retry_test
+    set /a COUNT+=1
+    echo 🔄 Attempt !COUNT! to download %FILE_NAME%...
+
+    gdown --fuzzy --no-cookies --id %FILE_ID% --output %FILE_NAME%
+    if exist %FILE_NAME% (
+        echo ✅ Successfully downloaded %FILE_NAME%.
+    ) else (
+        if !COUNT! LSS %RETRIES% (
+            echo ❌ Failed to download. Retrying in %TIMEOUT% seconds...
+            timeout /T %TIMEOUT% >nul
+            goto retry_test
+        ) else (
+            echo ❌ Download failed after %RETRIES% attempts.
+            exit /b 1
+        )
+    )
+)
+
+exit /b 0
