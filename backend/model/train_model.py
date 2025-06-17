@@ -7,7 +7,10 @@ import joblib
 import os
 
 # Paths
-DATA_PATH = '../../backend/data/train.csv'
+import os
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+DATA_PATH = os.path.join(BASE_DIR, "data", "train.csv")
+
 MODEL_PATH = '../model/sentiment_model.pkl'
 VECTORIZER_PATH = '../model/vectorizer.pkl'
 
