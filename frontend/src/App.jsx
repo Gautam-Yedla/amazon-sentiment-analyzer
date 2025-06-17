@@ -5,38 +5,29 @@ function App() {
   const [result, setResult] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  // --- BACKEND LOGIC (UNCHANGED) ---
+  // --- BACKEND LOGIC (WITH API CALL) ---
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setResult(null)
-    setIsLoading(true)
+    e.preventDefault();
+    setResult(null);
+    setIsLoading(true);
 
     try {
-      // Simulate API call for demo purposes
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // Mock sentiment analysis based on keywords
-      const lowerText = text.toLowerCase()
-      let prediction = 'neutral'
-      let confidence = 0.75
-      
-      if (lowerText.includes('love') || lowerText.includes('great') || lowerText.includes('excellent') || lowerText.includes('amazing') || lowerText.includes('perfect')) {
-        prediction = 'positive'
-        confidence = 0.92
-      } else if (lowerText.includes('hate') || lowerText.includes('terrible') || lowerText.includes('awful') || lowerText.includes('bad') || lowerText.includes('worst')) {
-        prediction = 'negative'
-        confidence = 0.87
-      } else if (lowerText.includes('okay') || lowerText.includes('average') || lowerText.includes('decent')) {
-        prediction = 'neutral'
-        confidence = 0.68
-      }
-      
-      setResult({ prediction, confidence })
+      // Call your Flask backend API
+      const response = await fetch(
+        'http://localhost:5000/predict',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        }
+      );
+      const data = await response.json();
+      setResult(data);
     } catch (err) {
-      console.error('Error:', err)
-      setResult({ error: 'Something went wrong.' })
+      console.error('Error:', err);
+      setResult({ error: 'Something went wrong.' });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 

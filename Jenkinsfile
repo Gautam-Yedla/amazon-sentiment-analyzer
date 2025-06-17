@@ -70,7 +70,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         echo "🐳 Building Docker containers..."
-        sh 'docker compose -f docker/docker-compose.yml build'
+        sh 'docker compose -f docker-compose.yml build'
       }
     }
   }
