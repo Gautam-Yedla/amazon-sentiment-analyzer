@@ -28,11 +28,21 @@ pipeline {
       }
     }
 
+    stage('Download Data') {
+      steps {
+        dir("${BACKEND_DIR}\\data") {
+          echo "⬇️ Downloading training and test data from Google Drive..."
+          bat 'call ..\\venv\\Scripts\\activate.bat && pip install gdown'
+          bat 'call ..\\venv\\Scripts\\activate.bat && gdown --id 1HaaK_fPnMzS6-xMdUTCxwhiZZRWGx_4p --output train.csv'
+          bat 'call ..\\venv\\Scripts\\activate.bat && gdown --id 1XT80AACe6HeQoQzXJ5iw7HYRNNioUXkw --output test.csv'
+        }
+      }
+    }
+
     stage('Train Model') {
       steps {
         dir("${BACKEND_DIR}\\model") {
           echo "🧠 Training ML model..."
-          // activate virtual environment from backend/venv and run training
           bat 'call ..\\venv\\Scripts\\activate.bat && python train_model.py'
         }
       }
