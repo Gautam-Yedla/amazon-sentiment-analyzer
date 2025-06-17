@@ -31,10 +31,9 @@ pipeline {
     stage('Download Data') {
       steps {
         dir("${BACKEND_DIR}\\data") {
-          echo "⬇️ Downloading training and test data from Google Drive..."
+          echo "⬇️ Downloading training and test data (if not cached)..."
           bat 'call ..\\venv\\Scripts\\activate.bat && pip install gdown'
-          bat 'call ..\\venv\\Scripts\\activate.bat && gdown --id 1HaaK_fPnMzS6-xMdUTCxwhiZZRWGx_4p --output train.csv'
-          bat 'call ..\\venv\\Scripts\\activate.bat && gdown --id 1XT80AACe6HeQoQzXJ5iw7HYRNNioUXkw --output test.csv'
+          bat 'download_data.bat'
         }
       }
     }
