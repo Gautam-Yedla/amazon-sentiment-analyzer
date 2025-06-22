@@ -5,6 +5,7 @@ function App() {
   const [text, setText] = useState('')
   const [result, setResult] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
   // --- BACKEND LOGIC (WITH API CALL) ---
   const handleSubmit = async (e) => {
@@ -14,14 +15,19 @@ function App() {
 
     try {
       // Call your Flask backend API
-      const response = await fetch(
-        'http://localhost:5000/predict',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text })
-        }
-      );
+      // const response = await fetch(
+      //   'http://localhost:5000/predict',
+      //   {
+      //     method: 'POST',
+      //     headers: { 'Content-Type': 'application/json' },
+      //     body: JSON.stringify({ text })
+      //   }
+      // );
+      const response = await fetch(`${API_BASE_URL}/predict`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
       const data = await response.json();
       setResult(data);
     } catch (err) {
