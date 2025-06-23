@@ -1,2 +1,11 @@
 backend/data/train.csv
 backend/data/test.csv
+backend/data/test01.csv
+backend/data/Beauty_and_Personal_Care.jsonl
+backend/data/test_full.parquet
+backend/data/train_all_3class.csv
+backend/data/train_all.csv
+backend/data/train_full.parquet
+backend/data/train01.csv
+backend/data/val_full.parquet
+backend/data/val01.csv
