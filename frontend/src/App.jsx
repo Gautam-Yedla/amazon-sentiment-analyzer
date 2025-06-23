@@ -7,6 +7,7 @@ import BulkUploader from './components/BulkUploader'
 import StatsPanel from './components/StatsPanel'
 import HistoryPanel from './components/HistoryPanel'
 import ModelInfoCard from './components/ModelInfoCard'
+import Logo from './assets/ASA_Full_Logo.png'
 
 // Main App Component
 function App() {
@@ -34,18 +35,30 @@ function App() {
         darkMode ? 'bg-black border-gray-800' : 'bg-white border-gray-200'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
+          <div className="flex items-center justify-between px-6 py-3 w-full">
+            {/* <div className="flex items-center space-x-3">
               <div className={`text-2xl p-2 rounded-lg ${
                 darkMode ? 'bg-white text-black' : 'bg-black text-white'
               }`}>📊</div>
               <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-black'}`}>
                 Amazon Sentiment Analyzer
               </h1>
+            </div> */}
+
+            <div className="flex items-center space-x-3">
+              <img 
+                src={Logo}  // <-- path to your logo
+                alt="Logo"
+                className="h-10 w-90 rounded-lg object-cover"
+              />
+              {/* <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-black'}`}>
+                Amazon Sentiment Analyzer
+              </h1> */}
             </div>
+
             
             {/* Navigation Tabs */}
-            <div className="hidden md:flex space-x-2">
+            <div className="hidden md:flex  space-x-2 ml-auto mr-4">
               {[
                 { id: 'analyze', label: 'Analyze', icon: '🔮' },
                 { id: 'bulk', label: 'Bulk Upload', icon: '📁' },
