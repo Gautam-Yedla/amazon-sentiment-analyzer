@@ -9,7 +9,7 @@ This full-stack application combines a Flask backend for model inference and a R
 
 ## 🌐 Live Demo
 
-**Frontend**: https://your-ngrok-url.ngrok-free.app/  
+**Frontend**: https://amazon-sentiment-analyzer.vercel.app/
 **API Endpoint**: https://your-ngrok-url.ngrok-free.app/predict?text=your+sample+review
 
 ---
