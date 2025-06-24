@@ -6,32 +6,23 @@ from sqlalchemy.orm import sessionmaker
 import joblib
 import os
 import time
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Database setup: PostgreSQL for production, SQLite fallback for local
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///history.db")
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+Base = declarative_base()
 
 # Flask app initialization
 app = Flask(__name__)
 CORS(app)
 
 # Load ML model and vectorizer
-
-
-# model = joblib.load('model/sentiment_model.pkl')
-# vectorizer = joblib.load('model/vectorizer.pkl')
-
-
-
-
 model = joblib.load('model/sgdclassifier_full/model.pkl')
 vectorizer = joblib.load('model/sgdclassifier_full/vectorizer.pkl')
-
-
-
-
-
-
-# Database setup: PostgreSQL for production, SQLite fallback for local
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///history.db")
-engine = create_engine(DATABASE_URL)
-Base = declarative_base()
 
 # Define History table
 class History(Base):
@@ -44,6 +35,7 @@ class History(Base):
 
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
+
 
 # Optional: GitHub webhook route (safe to ignore for app usage)
 @cross_origin()

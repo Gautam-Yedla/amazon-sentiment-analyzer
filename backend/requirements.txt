@@ -7,3 +7,4 @@ gunicorn
 SQLAlchemy
 scikit-learn
 psycopg2-binary
+python-dotenv

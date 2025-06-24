@@ -29,4 +29,4 @@ services:
       - key: PORT
         value: 10000
       - key: DATABASE_URL
-        value: postgresql://amazon_sentiment_db_user:aXzVl4OFJNl0fVi9MDjonpDGCG9QaZAI@dpg-d1d98ier433s73f0l7ig-a/amazon_sentiment_db
+        value: postgresql://amazon_sentiment_db_user:aXzVl4OFJNl0fVi9MDjonpDGCG9QaZAI@dpg-d1d98ier433s73f0l7ig-a.singapore-postgres.render.com/amazon_sentiment_db
