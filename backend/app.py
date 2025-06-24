@@ -28,8 +28,8 @@ vectorizer = joblib.load('model/sgdclassifier_full/vectorizer.pkl')
 
 
 
-# SQLite database setup
-DATABASE_URL = "sqlite:///history.db"
+# Database setup: PostgreSQL for production, SQLite fallback for local
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///history.db")
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
 
